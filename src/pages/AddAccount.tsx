@@ -56,8 +56,10 @@ const AddAccount = () => {
             onChange={(e) => setPin(e.target.value)}
             className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+          <div className="flex gap-3">
           <Button onClick={handleAddAccount}>Add Account</Button>
           <Button onClick={() => navigate("/dashboard")}>Back</Button>
+        </div>
         </div>
       </div>
     </div>

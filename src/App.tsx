@@ -6,6 +6,8 @@ import Transactions from "./pages/Transaction";
 import Deposit from "./pages/Deposit";
 import Withdraw from "./pages/Withdraw";
 import AddAccount from "./pages/AddAccount";
+import Accounts from "./pages/Accounts";
+import Transfer from "./pages/Transfaer";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
@@ -21,6 +23,8 @@ function App() {
         <Route path="/deposit" element={<Deposit />} />
         <Route path="/withdraw" element={<Withdraw />} />
         <Route path="/add-account" element={<AddAccount />} />
+        <Route path="/accounts" element={<Accounts />} />
+        <Route path="/transfer" element={<Transfer />} />
       </Routes>
       <Footer />
     </Router>

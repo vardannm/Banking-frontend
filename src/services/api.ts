@@ -17,7 +17,7 @@ export const getCustomerData = async (customerID?: string) => {
     method: "GET",
   });
   if (!response.ok) throw new Error("Failed to fetch customer data");
-  return response.json();
+  return response.json() as Promise<{ name: string; accounts: { accountNumber: string; balance: number }[] }>;
 };
 
 export const getTransactions = async (customerID?: string) => {
@@ -58,5 +58,15 @@ export const addAccount = async (customerID: string, accountNumber: string, init
     body: JSON.stringify({ customerID, accountNumber, initialBalance, pin }),
   });
   if (!response.ok) throw new Error("Add account failed");
+  return response.text();
+};
+
+export const transfer = async (customerID: string, fromAccountNumber: string, toAccountNumber: string, amount: number) => {
+  const response = await fetch(`${API_BASE_URL}/transfer`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ customerID, fromAccountNumber, toAccountNumber, amount }),
+  });
+  if (!response.ok) throw new Error("Transfer failed");
   return response.text();
 };

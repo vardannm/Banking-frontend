@@ -1,14 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Button from "../components/Button";
-import { withdraw } from "../services/api";
+import { withdraw, getCustomerData } from "../services/api";
 
 const Withdraw = () => {
   const [accountNumber, setAccountNumber] = useState("");
   const [amount, setAmount] = useState("");
+  const [accounts, setAccounts] = useState<{ accountNumber: string; balance: number }[]>([]);
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
+
+  useEffect(() => {
+    const fetchAccounts = async () => {
+      const customerID = location.state?.customerID || localStorage.getItem("customerID");
+      if (!customerID) {
+        navigate("/login");
+        return;
+      }
+      try {
+        const data = await getCustomerData(customerID);
+        setAccounts(data.accounts);
+        if (data.accounts.length > 0) setAccountNumber(data.accounts[0].accountNumber); // Default to first account
+      } catch (err) {
+        setError("Failed to load accounts: " + err.message);
+        navigate("/login");
+      }
+    };
+    fetchAccounts();
+  }, [navigate, location]);
 
   const handleWithdraw = async () => {
     const customerID = location.state?.customerID || localStorage.getItem("customerID");
@@ -34,13 +54,21 @@ const Withdraw = () => {
         <h2 className="text-2xl font-bold text-blue-600 mb-6 text-center">Withdraw</h2>
         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
         <div className="space-y-4">
-          <input
-            type="text"
-            placeholder="Account Number"
+          <select
             value={accountNumber}
             onChange={(e) => setAccountNumber(e.target.value)}
             className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+          >
+            {accounts.length === 0 ? (
+              <option value="">No accounts available</option>
+            ) : (
+              accounts.map((acc) => (
+                <option key={acc.accountNumber} value={acc.accountNumber}>
+                  {acc.accountNumber} (${acc.balance.toFixed(2)})
+                </option>
+              ))
+            )}
+          </select>
           <input
             type="number"
             placeholder="Amount"
@@ -48,8 +76,10 @@ const Withdraw = () => {
             onChange={(e) => setAmount(e.target.value)}
             className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <Button onClick={handleWithdraw}>Withdraw</Button>
-          <Button onClick={() => navigate("/dashboard")}>Back</Button>
+          <div className="flex gap-3">
+            <Button onClick={handleWithdraw}>Withdraw</Button>
+            <Button onClick={() => navigate("/dashboard")}>Back</Button>
+          </div>
         </div>
       </div>
     </div>
