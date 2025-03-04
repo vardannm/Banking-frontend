@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { getTransactions } from "../services/api";
-import { Line } from "react-chartjs-2"; // Import Line chart
+import { Line } from "react-chartjs-2"; 
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -13,7 +13,6 @@ import {
   Legend,
 } from "chart.js";
 
-// Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 interface Transaction {
@@ -54,7 +53,7 @@ const Transactions = () => {
     fetchTransactions();
   }, [navigate, location]);
 
-  // Calculate running balance
+
   const calculateBalanceData = () => {
     let balance = 0;
     const balanceData = transactions.map((t) => {
@@ -68,7 +67,6 @@ const Transactions = () => {
     return balanceData;
   };
 
-  // Chart data
   const chartData = {
     labels: transactions.map((t) => t.dateTime),
     datasets: [

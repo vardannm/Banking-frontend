@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"; // Add useEffect
+import { useState, useEffect } from "react"; 
 import { useNavigate, useLocation } from "react-router-dom";
 import Button from "../components/Button";
 import { deposit, getCustomerData } from "../services/api";
@@ -21,7 +21,7 @@ const Deposit = () => {
       try {
         const data = await getCustomerData(customerID);
         setAccounts(data.accounts);
-        if (data.accounts.length > 0) setAccountNumber(data.accounts[0].accountNumber); // Default to first account
+        if (data.accounts.length > 0) setAccountNumber(data.accounts[0].accountNumber); 
       } catch (err) {
         setError("Failed to load accounts: " + err.message);
         navigate("/login");
