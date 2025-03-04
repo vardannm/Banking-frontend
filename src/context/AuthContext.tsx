@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [customerID, setCustomerID] = useState<string | null>(null);
 
   useEffect(() => {
-    // Check localStorage for existing token on app load
+    
     const token = localStorage.getItem("token");
     const storedCustomerID = localStorage.getItem("customerID");
 

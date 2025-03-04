@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
-import { login } from "../services/api"; // Import the login function
+import { login } from "../services/api";
 
 const Login = () => {
   const [customerID, setCustomerID] = useState("");
@@ -14,15 +14,16 @@ const Login = () => {
       setError("Please fill in all fields.");
       return;
     }
-
     try {
-      await login(customerID, pin); // Use the login function
+      await login(customerID, pin);
+      localStorage.setItem("customerID", customerID);
+      console.log("Set customerID in localStorage:", localStorage.getItem("customerID"));  
       navigate("/dashboard");
     } catch (err) {
       setError("Invalid credentials or server error.");
+      console.error("Login error:", err);
     }
   };
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md w-96">

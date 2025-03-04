@@ -1,30 +1,42 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { getTransactions } from "../services/api"; // Import the getTransactions function
+import { useNavigate, useLocation } from "react-router-dom";
+import { getTransactions } from "../services/api";
 
 interface Transaction {
-  id: number;
+  id: number; 
   type: string;
   amount: number;
-  date: string;
+  dateTime: string; 
 }
 
 const Transactions = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const fetchTransactions = async () => {
+      const customerID = location.state?.customerID || localStorage.getItem("customerID");
+      if (!customerID) {
+        console.error("No customerID found, redirecting to login");
+        navigate("/login");
+        return;
+      }
       try {
-        const data = await getTransactions(); // Use the getTransactions function
-        setTransactions(data);
+        const data = await getTransactions(customerID);
+        setTransactions(data.map((t: any, index: number) => ({
+          id: index,
+          type: t.type,
+          amount: t.amount,
+          dateTime: t.dateTime,
+        })));
       } catch (err) {
+        console.error("Failed to fetch transactions:", err);
         navigate("/login");
       }
     };
-
     fetchTransactions();
-  }, [navigate]);
+  }, [navigate, location]);
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
@@ -43,7 +55,7 @@ const Transactions = () => {
               <tr key={transaction.id} className="border-b">
                 <td className="p-2">{transaction.type}</td>
                 <td className="p-2">${transaction.amount.toFixed(2)}</td>
-                <td className="p-2">{transaction.date}</td>
+                <td className="p-2">{transaction.dateTime}</td>
               </tr>
             ))}
           </tbody>
