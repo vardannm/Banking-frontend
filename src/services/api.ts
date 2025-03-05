@@ -70,3 +70,13 @@ export const transfer = async (customerID: string, fromAccountNumber: string, to
   if (!response.ok) throw new Error("Transfer failed");
   return response.text();
 };
+
+export const register = async (name: string, customerID: string, email: string, phoneNumber: string, pin: string, accounts: { accountNumber: string; initialBalance: number }[]) => {
+  const response = await fetch(`${API_BASE_URL}/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, customerID, email, phoneNumber, pin, accounts }),
+  });
+  if (!response.ok) throw new Error("Registration failed");
+  return response.text();
+};

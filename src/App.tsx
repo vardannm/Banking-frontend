@@ -10,7 +10,7 @@ import Accounts from "./pages/Accounts";
 import Transfer from "./pages/Transfaer";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-
+import Register from "./pages/Register";
 function App() {
   return (
     <Router>
@@ -25,6 +25,7 @@ function App() {
         <Route path="/add-account" element={<AddAccount />} />
         <Route path="/accounts" element={<Accounts />} />
         <Route path="/transfer" element={<Transfer />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
       <Footer />
     </Router>

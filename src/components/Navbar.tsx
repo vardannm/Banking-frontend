@@ -2,10 +2,10 @@ import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const isLoggedIn = !!localStorage.getItem("customerID"); 
+  const isLoggedIn = !!localStorage.getItem("customerID");
 
   const handleLogout = () => {
-    localStorage.removeItem("customerID"); 
+    localStorage.removeItem("customerID");
     navigate("/login");
   };
 
@@ -29,9 +29,14 @@ const Navbar = () => {
               </button>
             </>
           ) : (
-            <Link to="/login" className="hover:text-blue-200">
-              Login
-            </Link>
+            <>
+              <Link to="/login" className="hover:text-blue-200">
+                Login
+              </Link>
+              <Link to="/register" className="hover:text-blue-200">
+                Register
+              </Link>
+            </>
           )}
         </div>
       </div>
